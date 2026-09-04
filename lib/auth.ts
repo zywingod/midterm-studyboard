@@ -31,7 +31,32 @@ export const authOptions: NextAuthOptions = {
       // 4. If everything checks out, return { id: user.id, name: user.name, email: user.email }.
       //    NEVER return the password hash.
       async authorize(credentials) {
-        return null; // TODO: replace with real verification logic
+        if(!credentials?.email || !credentials?.password) {
+          return null;
+        }
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        })
+
+        if (!user) {
+          return null;
+        }
+
+        const isValidPassword = await bcrypt.compare(
+          credentials.password, 
+          user.password
+        )
+
+        if (!isValidPassword) {
+          return null;
+        }
+
+        return { 
+          id: user.id, 
+          name: user.name, 
+          email: user.email 
+        };
       },
     }),
   ],
@@ -42,6 +67,9 @@ export const authOptions: NextAuthOptions = {
     // your one chance to pull the id out and store it on the token for
     // future requests.
     async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id; // Copy the user's id onto the token
+      }
       return token; // TODO: if `user` exists, copy user.id onto token.id
     },
     // TODO (Step 3): Copy the id back out of the token onto the session.
@@ -49,6 +77,9 @@ export const authOptions: NextAuthOptions = {
     // getServerSession()). Without this, session.user will never have an
     // `id` field, even though the token does.
     async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string; // Copy the token's id onto the session user
+      }
       return session; // TODO: if session.user exists, copy token.id onto session.user.id
     },
   },

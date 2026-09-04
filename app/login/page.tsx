@@ -25,7 +25,24 @@ export default function LoginPage() {
   //    the session and shows you as logged in.
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    setError("TODO: implement login submit handler");
+    setError("");
+    setIsSubmitting(true);
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    setIsSubmitting(false);
+
+    if (result?.error) {
+      setError("Invalid email or password.");
+      return;
+    }
+
+    router.push("/groups");
+    router.refresh();
   }
 
   return (
