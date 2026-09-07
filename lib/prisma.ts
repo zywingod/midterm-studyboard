@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import "@/lib/env";
 
 // In development, Next.js hot-reloads modules, which would otherwise
 // create a brand-new PrismaClient (and a new DB connection) on every
