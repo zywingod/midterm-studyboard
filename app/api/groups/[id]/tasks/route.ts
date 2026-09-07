@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getGroupById, createTask } from "@/lib/data";
+import { createTaskSchema } from "@/lib/validation";
 
-// GET /api/groups/:id/tasks — list a group's tasks. Stays PUBLIC.
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
@@ -17,10 +17,7 @@ export async function GET(
   return NextResponse.json(group.tasks);
 }
 
-// TODO (Step 14): POST /api/groups/:id/tasks — add a task to a group.
-// Requires authentication AND ownership of the PARENT GROUP (not the task —
-// tasks don't have their own owner field, so we check via their group).
-// Follow the same 3-check pattern as PATCH /api/groups/:id in the previous file.
+
 export async function POST(
   request: Request,
   { params }: { params: { id: string } }
@@ -33,8 +30,18 @@ export async function POST(
       { status: 401 }
     );
   }
+  
+  const body = await request.json();
+  const parsedResponse = createTaskSchema.safeParse(body);
+  if (!parsedResponse.success) {
+    return NextResponse.json(
+      { error: parsedResponse.error.issues[0].message },
+      { status: 400 }
+    );
+  }
 
   const group = await getGroupById(params.id);
+  
   
   if (!group) {
     return NextResponse.json({ error: "Group not found" }, { status: 404 });
@@ -47,7 +54,7 @@ export async function POST(
     );
   }
 
-  const body = await request.json();
+
 
   if (!body.title) {
     return NextResponse.json(
