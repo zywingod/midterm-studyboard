@@ -18,23 +18,17 @@ export default function DeleteGroupButton({ groupId }: { groupId: string }) {
 
     setIsDeleting(true);
 
-    try {
-      const res = await fetch(`/api/groups/${groupId}`, { method: "DELETE" });
+    const res = await fetch(`/api/groups/${groupId}`, { method: "DELETE" });
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        setError(data.error ?? "Failed to delete group.");
-        setIsDeleting(false);
-        return;
-      }
-
-
-      router.push("/groups");
-      router.refresh();
-    } catch {
-      setError("Something went wrong. Please try again.");
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Failed to delete group.");
       setIsDeleting(false);
+      return;
     }
+
+    router.push("/groups");
+    router.refresh();
   }
 
   return (
