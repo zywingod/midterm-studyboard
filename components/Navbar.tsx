@@ -26,8 +26,8 @@ export default function Navbar() {
                 href={link.href}
                 className={
                   isActive
-                    ? "font-semibold text-blue-600"
-                    : "text-gray-600 hover:text-blue-600"
+                    ? "font-semibold text-emerald-700"
+                    : "text-gray-600 hover:text-emerald-600"
                 }
               >
                 {link.label}
@@ -39,8 +39,8 @@ export default function Navbar() {
               href="/groups/new"
               className={
                 pathname === "/groups/new"
-                  ? "font-semibold text-blue-600"
-                  : "text-gray-600 hover:text-blue-600"
+                  ? "font-semibold text-emerald-700"
+                  : "text-gray-600 hover:text-emerald-600"
               }
             >
               New Group
@@ -55,19 +55,17 @@ export default function Navbar() {
             <span className="text-gray-600">Hello, {session?.user?.name}</span>
             <button
               onClick={() => signOut({ callbackUrl: "/" })}
-              className="text-gray-600 hover:text-blue-600"
+              className="text-gray-600 hover:text-emerald-600"
             >
               Sign Out
             </button>
           </>
-        ) 
-        : 
-        (
+        ) : (
           <>
-            <Link href="/login" className="text-gray-600 hover:text-blue-600">
+            <Link href="/login" className="text-gray-600 hover:text-emerald-600">
               Log In
             </Link>
-            <Link href="/register" className="text-gray-600 hover:text-blue-600">
+            <Link href="/register" className="text-gray-600 hover:text-emerald-600">
               Register
             </Link>
           </>
