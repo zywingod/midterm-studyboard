@@ -28,7 +28,7 @@ export default async function GroupDetailPage({
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">{group.name}</h1>
-          <p className="text-gray-500">
+          <p className="text-emerald-600">
             {group.subject} · {group.memberCount} members · Created by{" "}
             {group.owner.name}
           </p>

@@ -22,9 +22,8 @@ export default function NewTaskForm({ groupId }: { groupId: string }) {
     });
 
     if (!res.ok) {
-      const isJson = res.headers.get("content-type")?.includes("application/json");
-      const data = isJson ? await res.json() : null;
-      setError(data?.error ?? "Failed to add task.");
+      const data = await res.json().catch(() => ({}));
+      setError(data.error ?? "Failed to add task.");
       setIsSubmitting(false);
       return;
     }
