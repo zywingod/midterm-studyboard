@@ -14,15 +14,6 @@ export default function RegisterPage() {
   const [error, setError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // TODO (Step 6): Implement the register submit handler.
-  // 1. Prevent default submission and clear any previous error.
-  // 2. POST to /api/register with { name, email, password } as JSON.
-  // 3. If the response is not ok, parse the error message from the body
-  //    and display it.
-  // 4. If registration succeeded, immediately sign the user in — call
-  //    signIn("credentials", { email, password, redirect: false }) so they
-  //    don't have to fill out the login form right after registering.
-  // 5. On success, router.push("/groups") and router.refresh().
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
@@ -116,7 +107,7 @@ export default function RegisterPage() {
 
       <p className="mt-4 text-sm text-gray-600">
         Already have an account?{" "}
-        <Link href="/login" className="text-blue-600 hover:underline">
+        <Link href="/login" className="text-emerald-600 hover:underline">
           Log in
         </Link>
       </p>
